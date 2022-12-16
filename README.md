@@ -1,4 +1,5 @@
 # Google Santa Tracker for Web
+# Penguin Dash Enhanced
 
 This repository contains the code to [Google Santa Tracker](https://santatracker.google.com), an educational and entertaining tradition for the December holiday period.
 
