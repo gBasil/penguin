@@ -88,7 +88,7 @@ export class SantaChromeElement extends LitElement {
     const sidebarId = `${this._id}sidebar`;  // unique ID even in Shady DOM
 
     // Either "Santa's Village" for the home button, or "View All" for all games.
-    const labelForMenu = this.showHome ? labels.home : labels.menu;
+    const labelForRestart = labels.restart;
     const labelForAudio = this.muted ? labels.mute : labels.unmute;
     const labelForAction = labels[this.action] || ''
 
@@ -100,13 +100,12 @@ export class SantaChromeElement extends LitElement {
 </div>
 <div id="padder">
   <header>
-    <santa-button aria-label=${labelForMenu} @click=${this._onMenuClick} path=${this.showHome ? paths.home : paths.menu}></santa-button>
+    <santa-button aria-label=${labelForRestart} @click=${this._onRestartClick} path=${paths.restart}></santa-button>
     <santa-button .hidden=${isAndroid()} aria-label=${labelForAudio} color=${this.muted ? 'purple' : ''} @click=${this._onAudioClick} path=${this.muted ? paths.unmute : paths.mute}></santa-button>
     <santa-button aria-label=${labelForAction} ?disabled=${!this.action} @click=${this._onActionClick} path=${paths[this.action || this._lastAction] || ''}></santa-button>
     <div class="grow"></div>
     <div><slot name="game"></slot></div>
     <div class="grow"></div>
-    <santa-countdown .until=${countdownTo}></santa-countdown>
     <div id="active-fixer"></div>
   </header>
 </div>
@@ -155,18 +154,11 @@ export class SantaChromeElement extends LitElement {
   }
 
   _onAudioClick() {
-    window.ga('send', 'event', 'nav', 'click', this.muted ? 'unmute' : 'mute');
     this.dispatchEvent(new CustomEvent('audio', {detail: this.muted}));
   }
 
-  _onMenuClick() {
-    if (this.showHome) {
-      window.ga('send', 'event', 'nav', 'click', 'home');
-      window.dispatchEvent(new CustomEvent(common.goEvent));  // home
-    } else {
-      window.ga('send', 'event', 'nav', 'click', 'menu');
-      this.navOpen = !this.navOpen;
-    }
+  _onRestartClick() {
+    this.dispatchEvent(new CustomEvent('restart'));
   }
 
   _onSidebarClick(e) {
@@ -181,7 +173,6 @@ export class SantaChromeElement extends LitElement {
 
 
   _onActionClick(e) {
-    window.ga('send', 'event', 'nav', 'click', this.action);
     this.dispatchEvent(new CustomEvent('action', {
       detail: this.action,
       bubbles: true,

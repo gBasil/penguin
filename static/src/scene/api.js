@@ -170,9 +170,6 @@ const sceneApi = (function() {
     target[key] = method.bind(target, type);
   }
 
-  // Add global Analytics passthrough.
-  window.ga = target.ga;
-
   // Handle common sound playback code. This is buffered just like `api.play()`.
   window.addEventListener(common.playEvent, (ev) => target.play(...ev.detail));
 

@@ -609,7 +609,6 @@ app.Start.prototype.overlapPrize_ = function(penguin, prize) {
   this.game.st_parent.scoreboard.addScore(app.Constants.POINTS_GIFT_BASIC);
 };
 
-
 /**
  * Run animation for falling and restart level.
  * @private
@@ -627,7 +626,10 @@ app.Start.prototype.dieAndRestart_ = function() {
     window.setTimeout(() => {
       this.dead = false;
       this.restartLevel_();
-      this.game.st_parent.scoreboard.onFrame(-app.Constants.TIME_LOSE);
+	//   console.log(window.peng);
+      if (!window.peng.getSetting('disableDeathPenalty')) this.game.st_parent.scoreboard.onFrame(-app.Constants.TIME_LOSE);
+    //   this.game.st_parent.scoreboard.onFrame(-app.Constants.TIME_LOSE);
+    //   this.game.st_parent.scoreboard.onFrame(-config('timeLose'));
     }, 2500);
   }
 
@@ -680,12 +682,12 @@ app.Start.prototype.gameover_ = function() {
   this.game.st_parent.gameoverView.show();
   window.santaApp.fire('sound-trigger', 'music_ingame_gameover');
   window.santaApp.fire('sound-trigger', 'pnd_game_over');
-  window.santaApp.fire('analytics-track-game-over', {
-    gameid: 'penguindash',
-    score: this.scoreboard.score,
-    level: this.level,
-    timePlayed: new Date - this.gameStartTime
-  });
+//   window.santaApp.fire('analytics-track-game-over', {
+//     gameid: 'penguindash',
+//     score: this.scoreboard.score,
+//     level: this.level,
+//     timePlayed: new Date - this.gameStartTime
+//   });
 };
 
 

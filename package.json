@@ -3,6 +3,9 @@
   "version": "2021.1.0",
   "license": "Apache-2.0",
   "scripts": {
+    "vite": "vite --port 3000",
+    "build": "vite build",
+	
     "dev": "npm run start",
     "start": "./serve.js",
     "release": "./release.js",
@@ -61,6 +64,7 @@
   },
   "devDependencies": {
     "@google-cloud/cloudbuild": "^2.6.0",
-    "@google-cloud/error-reporting": "^2.0.4"
+    "@google-cloud/error-reporting": "^2.0.4",
+    "vite": "^4.0.1"
   }
 }

@@ -34,6 +34,8 @@ The development URL will be copied to your clipboard.
 
 The serving script `./serve.js` will listen on both ports 8000 and 8080 by default. Port 8000 serves the host part of the site (this corresponds to the production https://santatracker.google.com domain), and port 8080 serves the static content, including the scenes.
 
+If you have Nix installed, you can run `nix-shell -p jre8`, followed by `node serve.js`.
+
 To load a specific scene, open e.g., http://localhost:8000/boatload.html.
 Once the site is loaded, you can also run `santaApp.route = 'sceneName'` in the console to switch scenes programmatically.
 

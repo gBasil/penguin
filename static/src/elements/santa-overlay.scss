@@ -18,211 +18,284 @@ $duration: 0.4s;
 $opacity-duration-out: 0.6s;
 
 @keyframes santa-overlay__hide {
-  from { visibility: visible; pointer-events: none; }
-    to { visibility: hidden; pointer-events: none; }
+	from {
+		visibility: visible;
+		pointer-events: none;
+	}
+	to {
+		visibility: hidden;
+		pointer-events: none;
+	}
 }
 
 :host {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 svg.icon {
-  margin: auto;
-  width: 24px;
-  height: 24px;
-  fill: currentColor;
+	margin: auto;
+	width: 24px;
+	height: 24px;
+	fill: currentColor;
 }
 
 .backdrop {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
-  z-index: 11;
-  transition: opacity $duration ease-in-out;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-flow: column;
+	z-index: 11;
+	transition: opacity $duration ease-in-out;
 }
 
 main {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
 
-  position: relative;
+	position: relative;
 
-  transform: translate(0);
-  transition: transform $duration cubic-bezier(0,1.52,.295,.86);
+	transform: translate(0);
+	transition: transform $duration cubic-bezier(0, 1.52, 0.295, 0.86);
 
-  font-family: 'Google Sans', 'Arial', Sans-Serif;
+	font-family: 'Google Sans', 'Arial', Sans-Serif;
 }
 
 :host([hidden]) {
-  display: block;
-  visibility: hidden;
-  animation: santa-overlay__hide $opacity-duration-out step-end forwards;
+	display: block;
+	visibility: hidden;
+	animation: santa-overlay__hide $opacity-duration-out step-end forwards;
 }
 
 :host([hidden]) .backdrop {
-  opacity: 0;
-  transition-duration: $opacity-duration-out;
+	opacity: 0;
+	transition-duration: $opacity-duration-out;
 }
 
 :host([hidden]) main {
-  transform: translateY(-100vh);
-  transition-timing-function: cubic-bezier(.83,.02,1,.01);
+	transform: translateY(-100vh);
+	transition-timing-function: cubic-bezier(0.83, 0.02, 1, 0.01);
 }
 
 nav,
 .hero {
-  min-width: 240px;
+	min-width: 240px;
 }
 
 nav {
-  pointer-events: auto;
-  background: rgba(255,255,255,.25);
-  border-radius: 12px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  padding: 12px;
-  position: relative;
+	pointer-events: auto;
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: 12px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	padding: 12px;
+	position: relative;
 
-  h4 {
-    color: #fff;
-    font-size: .6em;
-    line-height: 2em;
-    font-weight: 800;
-    margin: 0;
-    margin-top: -8px;
-    text-transform: uppercase;
-  }
+	h4 {
+		color: #fff;
+		font-size: 0.6em;
+		line-height: 2em;
+		font-weight: 800;
+		margin: 0;
+		margin-top: -8px;
+		text-transform: uppercase;
+	}
 
-  .url {
-    position: relative;
+	.url {
+		position: relative;
 
-    input {
-      cursor: copy;
-      width: 100%;
-      border: 0;
-      border-radius: 4px;
-      font: inherit;
-      font-size: 12px;
-      text-align: center;
-      font-weight: 400;
-      letter-spacing: -0.5px;
-      padding: 4px;
-      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.125);
-      box-sizing: border-box;
-      margin-bottom: 8px;
-      background: white;
-      color: black;
+		input {
+			cursor: copy;
+			width: 100%;
+			border: 0;
+			border-radius: 4px;
+			font: inherit;
+			font-size: 12px;
+			text-align: center;
+			font-weight: 400;
+			letter-spacing: -0.5px;
+			padding: 4px;
+			box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.125);
+			box-sizing: border-box;
+			margin-bottom: 8px;
+			background: white;
+			color: black;
 
-      transition: background 0.25s, color 0.25s;
-      &.copy {
-        transition: none;
-        background: black;
-        color: white;
-      }
-    }
-  }
+			transition: background 0.25s, color 0.25s;
+			&.copy {
+				transition: none;
+				background: black;
+				color: white;
+			}
+		}
+	}
 
-  .buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 4px;
+	.buttons {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 4px;
 
-    santa-button {
-      padding: 2px;
-      margin: 0 4px;
-      width: 44px;
-      height: 44px;
+		santa-button {
+			padding: 2px;
+			margin: 0 4px;
+			width: 44px;
+			height: 44px;
 
-      svg {
-        position: absolute;
-        margin: auto;  
-      }
-    }
-  }
+			svg {
+				position: absolute;
+				margin: auto;
+			}
+		}
+	}
 }
 
 .hero {
-  flex-grow: 1;
-  min-height: 136px;
-  background: _rel("../../img/overlay/gameover.svg") bottom center / contain no-repeat;
+	flex-grow: 1;
+	min-height: 136px;
+	background: _rel('../../img/overlay/gameover.svg') bottom center / contain
+		no-repeat;
 
-  @media (min-height: 500px) {
-    min-height: 218px;
-  }
+	@media (min-height: 500px) {
+		min-height: 218px;
+	}
 
-  &.share {
-    background-image: _rel("../../img/overlay/share.svg");
-  }
-  &.pause {
-    background-image: _rel("../../img/overlay/pause.svg");
-  }
+	&.share {
+		background-image: _rel('../../img/overlay/share.svg');
+	}
+	&.pause {
+		background-image: _rel('../../img/overlay/pause.svg');
+	}
 
-  h1 {
-    text-align: center;
-    color: white;
-    line-height: 42px;
-    font-size: 42px;
-    font-weight: 800;
-    letter-spacing: -2px;
-    margin: 0;
-    text-shadow: 1px 2px 0 rgba(0,0,0,.13);
-    font-family: Lobster;
-  }
+	h1 {
+		text-align: center;
+		color: white;
+		line-height: 42px;
+		font-size: 42px;
+		font-weight: 800;
+		letter-spacing: -2px;
+		margin: 0;
+		text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.13);
+		font-family: Lobster;
+	}
 
-  &:not(.gameover) h1 {
-    display: none;
-  }
+	&:not(.gameover) h1 {
+		display: none;
+	}
 }
 
 .below {
-  display: flex;
-  align-items: space-around;
-  justify-content: center;
-  margin: 1em;
-  transition: opacity $duration, transform $duration;
+	display: flex;
+	align-items: space-around;
+	justify-content: center;
+	margin: 1em;
+	transition: opacity $duration, transform $duration;
 
-  ::slotted(santa-card) {
-    pointer-events: auto;
-    margin: 8px;
-    width: 200px;
-    height: 120px;
-    --radius: 12px;
+	::slotted(santa-card) {
+		pointer-events: auto;
+		margin: 8px;
+		width: 200px;
+		height: 120px;
+		--radius: 12px;
 
-    @media (max-width: 400px), (max-height: 400px) {
-      font-size: 0.8em;
-      width: 160px;
-      height: 100px;
-      --radius: 10px;
-      margin: 4px;
-    }
-  }
+		@media (max-width: 400px), (max-height: 400px) {
+			font-size: 0.8em;
+			width: 160px;
+			height: 100px;
+			--radius: 10px;
+			margin: 4px;
+		}
+	}
 }
 :host([hidden]) .below {
-  opacity: 0;
-  transform: translateY(50%);
+	opacity: 0;
+	transform: translateY(50%);
 }
 
 @media (max-width: 500px) {
-  .below {
-    flex-flow: column;
-  }
+	.below {
+		flex-flow: column;
+	}
 }
 
 @media (max-height: 500px) and (min-width: 500px + 1px) {
-  .backdrop {
-    flex-flow: row;
-  }
-  .below {
-    flex-flow: column;
-  }
-  :host([hidden]) .below {
-    transform: translate(50%);
-  }
+	.backdrop {
+		flex-flow: row;
+	}
+	.below {
+		flex-flow: column;
+	}
+	:host([hidden]) .below {
+		transform: translate(50%);
+	}
+}
+
+// Mod settings
+.settings {
+	box-sizing: border-box;
+	width: 100%;
+	margin-top: 16px;
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: 12px;
+	padding: 12px;
+	pointer-events: auto;
+
+	h3,
+	a {
+		text-shadow: rgb(0 0 0 / 50%) 0px 0px 4px;
+		color: white;
+		margin: 0;
+	}
+
+	h3 {
+		margin-bottom: 8px;
+	}
+
+	label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		cursor: pointer;
+
+		input[type='checkbox'] {
+			$off: #8a8a8a;
+			$on: rgb(220, 67, 67);
+
+			all: unset;
+			transition: background 0.2s ease-out;
+			width: 32px;
+			height: 16px;
+			display: inline-block;
+			background: $off;
+			border-radius: 8px;
+
+			&::before {
+				content: '';
+				position: relative;
+				left: 0px;
+				transition: left 0.2s ease-out, border-color 0.2s ease-out;
+
+				height: 16px;
+				width: 16px;
+				border-radius: 8px;
+				background-color: #d7d7d7;
+				display: block;
+				border: 2px solid;
+				border-color: $off;
+				box-sizing: border-box;
+			}
+
+			&:checked {
+				background: $on;
+			}
+			&:checked::before {
+				border-color: $on;
+				left: 16px;
+			}
+		}
+	}
 }

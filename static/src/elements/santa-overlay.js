@@ -17,38 +17,9 @@
 import {html, LitElement} from 'lit-element';
 import {until} from 'lit-html/directives/until.js';
 import styles from './santa-overlay.css';
-import * as common from '../core/common.js';
 import {_msg} from '../magic.js';
 import './santa-button.js';
-
-
-async function shortenUrl(raw) {
-  // Firebase is only configured to serve links under `https://santatracker.google.com`.
-  const key = 'AIzaSyBrNcGcna0TMn2uLRxhMBwxVwXUBjlZqzU';
-  const domain = 'https://santatracker.google.com';
-
-  if (!raw) {
-    return '';
-  }
-
-  const ensureDomainURL = new URL(raw, domain);
-  const url = new URL(ensureDomainURL.pathname + ensureDomainURL.search, domain);
-
-  const response = await window.fetch(`https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${key}`, {
-    method: 'POST',
-    body: JSON.stringify({dynamicLinkInfo: {
-      domainUriPrefix: 'https://santatracker.page.link',
-      link: url.toString(),
-    }}),
-  });
-
-  const body = await response.json();
-  if ('shortLink' in body) {
-    return body['shortLink'];
-  }
-  throw new Error(`shortLink invalid data: ${JSON.stringify(body)}`);
-}
-
+import { getSetting, setSetting, settings } from '../mod/settings.js';
 
 export class SantaOverlayElement extends LitElement {
   static get properties() {
@@ -72,14 +43,15 @@ export class SantaOverlayElement extends LitElement {
     this.dispatchEvent(new CustomEvent('resume'));
   }
 
-  _dispatchHome() {
-    window.dispatchEvent(new CustomEvent(common.goEvent));  // home
+  _toggleSetting(e) {
+	setSetting(e.target.id, e.target.checked);
   }
 
   update(changedProperties) {
     if (changedProperties.has('shareUrl')) {
-      this._shortUrl = shortenUrl(this.shareUrl);
+      this._shortUrl = this.shareUrl;
     }
+
     return super.update(changedProperties);
   }
 
@@ -89,7 +61,6 @@ export class SantaOverlayElement extends LitElement {
     input.select();
     document.execCommand('copy');
     input.setSelectionRange(0, 0);
-    window.ga('send', 'event', 'nav', 'click', 'copy-url');
 
     input.classList.add('copy');
     window.requestAnimationFrame(() => {
@@ -119,15 +90,16 @@ export class SantaOverlayElement extends LitElement {
         <santa-button aria-label=${_msg`playagain`} color="purple" @click="${this._dispatchRestart}" id="playagainButton">
           <svg class="icon"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
         </santa-button>
-        <santa-button aria-label=${_msg`santasvillage`} color="theme" @click="${this._dispatchHome}" data-action="home">
-          <svg class="icon"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        </santa-button>
       </div>
     </nav>
+	<div class="settings">
+		<h3>Settings</h3>
+		${settings.map(setting => html`<label>
+			${setting.type === 'boolean' && html`<input type="checkbox" @change="${this._toggleSetting}" id="${setting.key}" .checked=${getSetting(setting.key)}></input>`}
+			<a>${setting.name}</a>
+		</label>`)}
+	</div>
   </main>
-  <div class="below" @click=${this._onBelowClick}>
-    <slot></slot>
-  </div>
 </div>
 `;
   }
@@ -137,12 +109,6 @@ export class SantaOverlayElement extends LitElement {
       this.shadowRoot.querySelector('#playButton').focus();
     } else {
       this.shadowRoot.querySelector('#playagainButton').focus();
-    }
-  }
-
-  _onBelowClick(event) {
-    if (event.target && event.target.localName === 'santa-card') {
-      window.ga('send', 'event', 'nav', 'click', 'below-card');
     }
   }
 }

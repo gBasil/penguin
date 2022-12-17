@@ -26,7 +26,6 @@ document.adoptedStyleSheets = [styles];
 
 import './src/elements/santa-chrome.js';
 import './src/elements/santa-notice.js';
-import './src/elements/santa-countdown.js';
 import * as gameloader from './src/elements/santa-gameloader.js';
 import './src/elements/santa-error.js';
 import './src/elements/santa-badge.js';
@@ -36,7 +35,6 @@ import './src/elements/santa-cardnav.js';
 import './src/elements/santa-tutorial.js';
 import './src/elements/santa-orientation.js';
 import './src/elements/santa-interlude.js';
-import {localStorage} from './src/storage.js';
 import maybeLoadCast from './src/deps/cast.js';
 import * as kplay from './src/kplay.js';
 import {buildLoader} from './src/core/loader.js';
@@ -61,23 +59,23 @@ const noticesElement = document.createElement('div');
 noticesElement.className = 'notices';
 document.body.append(noticesElement);
 
-if (!isAndroid()) {
-  const cookieNoticeElement = document.createElement('santa-notice');
-  cookieNoticeElement.key = 'cookie-ok';
-  cookieNoticeElement.href = 'https://policies.google.com/technologies/cookies';
-  cookieNoticeElement.textContent = _msg`notice_cookies`;
-  noticesElement.append(cookieNoticeElement);
-}
+// if (!isAndroid()) {
+//   const cookieNoticeElement = document.createElement('santa-notice');
+//   cookieNoticeElement.key = 'cookie-ok';
+//   cookieNoticeElement.href = 'https://policies.google.com/technologies/cookies';
+//   cookieNoticeElement.textContent = _msg`notice_cookies`;
+//   noticesElement.append(cookieNoticeElement);
+// }
 
-const upgradeNoticeElement = document.createElement('santa-notice');
-upgradeNoticeElement.textContent = _msg`error-out-of-date`;
-upgradeNoticeElement.hidden = !firebaseConfig.siteExpired();
-firebaseConfig.listen(() => {
-  // nb. This has the unfortunate problem of bringing this message back very often, but that's
-  // probably fine, since the user is in a very bad state anyway.
-  upgradeNoticeElement.hidden = !firebaseConfig.siteExpired();
-});
-noticesElement.append(upgradeNoticeElement);
+// const upgradeNoticeElement = document.createElement('santa-notice');
+// upgradeNoticeElement.textContent = _msg`error-out-of-date`;
+// upgradeNoticeElement.hidden = !firebaseConfig.siteExpired();
+// firebaseConfig.listen(() => {
+//   // nb. This has the unfortunate problem of bringing this message back very often, but that's
+//   // probably fine, since the user is in a very bad state anyway.
+//   upgradeNoticeElement.hidden = !firebaseConfig.siteExpired();
+// });
+// noticesElement.append(upgradeNoticeElement);
 
 const loaderElement = document.createElement('santa-gameloader');
 const interludeElement = document.createElement('santa-interlude');
@@ -132,81 +130,6 @@ chromeElement.addEventListener('sidebar-open', (ev) => {
   window.addEventListener('resize', refreshInsets);
   refreshInsets();
 }());
-
-
-// Controls the random future games that a user is suggested.
-(function() {
-  const recentBuffer = 6;
-  const displayCardCount = 2;
-  const recentRoutes = new Set();
-
-  window.addEventListener('entrypoint-route', (ev) => {
-    const route = ev.detail;
-    global.setState({route});
-
-    recentRoutes.add(route);
-    while (recentRoutes.size >= recentBuffer) {
-      for (const key of recentRoutes) {
-        recentRoutes.delete(key);
-        break;
-      }
-    }
-    updatePlayNextCards(route);
-  });
-
-  function updatePlayNextCards(currentRoute) {
-    // array of all possible games
-    const nav = firebaseConfig.nav().filter((x) => x[0] !== '@' && !firebaseConfig.isLocked(x));
-
-    if (nav.length <= displayCardCount) {
-      console.warn('not enough valid nav routes to create cards', nav)
-      return;
-    }
-
-    // choose games biasing towards start
-    const cards = [];
-    const attempts = 20;
-    let i = 0;
-    while (cards.length < displayCardCount) {
-      ++i;
-      const index = ~~(Math.pow(Math.random(), 4) * nav.length);
-      const choice = nav.splice(index, 1)[0];
-      if ((recentRoutes.has(choice) || cards.indexOf(choice) !== -1) && i < attempts) {
-        continue;
-      }
-      cards.push(choice);
-    }
-
-    scoreOverlayElement.textContent = '';
-    cards.forEach((scene) => {
-      const card = document.createElement('santa-card');
-      card.scene = scene;
-      scoreOverlayElement.append(card);
-    });
-
-    let playNextRoute = cards[0];
-
-    let featured = firebaseConfig.featuredRoute();
-    if (featured === 'takeoff' || featured === 'liftoff') {
-      // FIXME: hack for HPP
-      featured = 'likealight';
-    }
-
-    if (!featured) {
-      // Do nothing, no featured.
-    } else if (currentRoute === featured) {
-      // We just chose this route. Mark it as "done".
-      localStorage['featured_played'] = featured;
-    } else if (localStorage['featured_played'] !== featured) {
-      // This route hasn't yet been played, so make it the Play Next route.
-      playNextRoute = featured;
-    }
-
-    console.warn('playNext is', playNextRoute);
-    global.setState({playNextRoute});
-  }
-}());
-
 
 const loadMethod = loaderElement.load.bind(loaderElement);
 const {scope, go, write: writeData} = configureProdRouter(buildLoader(loadMethod));
@@ -288,7 +211,6 @@ global.subscribe((state) => {
   // This happens first, as we modify state as a side-effect.
   if (state.status === 'restart') {
     state.status = '';  // nb. modifies state as side effect
-    ga('send', 'event', 'game', 'start', state.route);
     state.control.send({type: 'restart'});
   }
 
@@ -538,18 +460,6 @@ async function runner(control, route) {
   const sc = kplayInstance;
   let recentScore = null;
 
-  // nb. we also call this as a result of 'restart'
-  ga('send', 'event', 'game', 'start', route);
-  const analyticsLogEnd = () => {
-    if (!recentScore) {
-      return;
-    }
-    ga('send', 'event', 'game', 'end', route);
-    recentScore.score && ga('send', 'event', 'game', 'score', route, recentScore.score);
-    recentScore.level && ga('send', 'event', 'game', 'level', route, recentScore.level);
-    recentScore = null;
-  };
-
   for (;;) {
     const op = await control.next();
     if (op === null || op === undefined) {
@@ -565,10 +475,6 @@ async function runner(control, route) {
         sc.play(...payload);
         continue;
 
-      case 'ga':
-        ga.apply(null, payload);
-        continue;
-
       case 'go':
         go(payload);
         continue;
@@ -582,7 +488,6 @@ async function runner(control, route) {
         global.setState({
           status: 'gameover',
         });
-        analyticsLogEnd();
         continue;
 
       case 'score':
@@ -605,8 +510,6 @@ async function runner(control, route) {
 
     console.debug('running scene unhandled', op);
   }
-
-  analyticsLogEnd();
 }
 
 

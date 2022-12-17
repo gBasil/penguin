@@ -189,12 +189,12 @@ app.Game.prototype.gameover = function() {
   this.freezeGame();
   this.gameoverView.show();
   window.santaApp.fire('sound-trigger', 'music_ingame_gameover');
-  window.santaApp.fire('analytics-track-game-over', {
-    gameid: 'penguindash',
-    score: this.scoreboard.score,
-    level: this.level,
-    timePlayed: new Date - this.gameStartTime
-  });
+//   window.santaApp.fire('analytics-track-game-over', {
+//     gameid: 'penguindash',
+//     score: this.scoreboard.score,
+//     level: this.level,
+//     timePlayed: new Date - this.gameStartTime
+//   });
 };
 
 
@@ -295,13 +295,6 @@ app.Game.prototype.watchOrientation_ = function() {
  * @export
  */
 app.Game.prototype.dispose = function() {
-  if (this.isPlaying) {
-    window.santaApp.fire('analytics-track-game-quit', {
-      gameid: 'penguindash',
-      timePlayed: new Date - this.gameStartTime,
-      level: this.level
-    });
-  }
   this.freezeGame();
 
   $(window).off('.penguindash');

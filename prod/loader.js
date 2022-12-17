@@ -35,7 +35,6 @@ const documentLang = document.documentElement.lang || null;
 const isProd = (documentLang !== null);
 const fallback = checkFallback() || (location.search || '').match(/\bfallback=.*?\b/);
 const ignoreErrors = (location.search || '').match(/\bignore=.*?\b/);
-console.info('Santa Tracker', config.version, documentLang, fallback ? '(fallback)' : '');
 
 // Global error handler. Redirect if we fail to load the entrypoint.
 let loaded = false;

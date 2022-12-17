@@ -33,7 +33,6 @@ window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   installEvent = event;
   notifyInstances();
-  window.ga('send', 'event', 'app', 'beforeinstallprompt');
   console.info('beforeinstallprompt');
 });
 
@@ -41,7 +40,6 @@ window.addEventListener('beforeinstallprompt', (event) => {
 window.addEventListener('appinstalled', () => {
   installEvent = null;
   notifyInstances();
-  window.ga('send', 'event', 'app', 'appinstalled');
   console.info('appinstalled');
 });
 
@@ -76,15 +74,11 @@ class SantaInstallElement extends LitElement {
     event.stopPropagation();
 
     if (!installEvent) {
-      if (isIos) {
-        window.ga('send', 'event', 'nav', 'click', 'install-ios');
-      }
       event.target.focus();  // Safari doesn't focus <button> by default
       return;  // this can happen on iOS, when clicking does nothing
     }
 
     installEvent.prompt();
-    window.ga('send', 'event', 'nav', 'click', 'install');
 
     const savedEvent = installEvent;
     Promise.resolve(installEvent.userChoice || 'unknown').then((choiceResult) => {
@@ -93,7 +87,6 @@ class SantaInstallElement extends LitElement {
         installEvent = null;
         notifyInstances();
       }
-      window.ga('send', 'event', 'app', 'install', choiceResult);
     });
   }
 

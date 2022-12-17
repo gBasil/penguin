@@ -67,9 +67,6 @@ export function buildLoader(loadMethod, fallback=false) {
 
     window.dispatchEvent(new CustomEvent('loader-route', {detail: route}));
 
-    ga('set', 'page', `/${route}`);
-    ga('send', 'pageview');
-
     const locked = (activeSceneName === null);
     loadMethod(url, {route, data, locked}).then((success) => {
       document.title = scenes[route] || _msg`santatracker`;
