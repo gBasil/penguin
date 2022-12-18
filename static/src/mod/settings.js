@@ -6,6 +6,20 @@ const settings = [
 		default: false,
 		cheat: true,
 	},
+	{
+		key: 'disableGiftSpawning',
+		name: 'Disable Gift Spawning',
+		type: 'boolean',
+		default: false,
+		cheat: false,
+	},
+	{
+		key: 'restartOnDeath',
+		name: 'Restart On Death',
+		type: 'boolean',
+		default: false,
+		cheat: false,
+	},
 ];
 
 // Initialize values

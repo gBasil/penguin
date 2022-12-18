@@ -118,6 +118,8 @@ chromeElement.addEventListener('sidebar-open', (ev) => {
   chromeElement.append(sidebarElement);
 }, {once: true});
 
+chromeElement.addEventListener('restart', () => global.setState({status: 'restart'}));
+
 
 // Controls configuring Android insets.
 (function() {

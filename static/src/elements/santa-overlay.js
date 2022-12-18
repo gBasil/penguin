@@ -19,7 +19,7 @@ import {until} from 'lit-html/directives/until.js';
 import styles from './santa-overlay.scss?inline';
 import {_msg} from '../magic.js';
 import './santa-button.js';
-import { getSetting, setSetting, settings } from '../mod/settings.js';
+import { getSetting, setSetting, settings } from '../mod/settings';
 
 export class SantaOverlayElement extends LitElement {
   static get properties() {

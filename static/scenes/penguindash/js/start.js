@@ -415,6 +415,7 @@ Start.prototype.additionalGroupInit_ = function(groups, level) {
   for (var key in groups) {
     switch (key) {
       case 'prize':
+		if (getSetting('disableGiftSpawning')) break;
         // present on ice or snow
         let ice = groups['snow'].group.children.concat(groups['ice'].group.children);
         let snowLen = groups['snow'].group.children.length;
@@ -618,6 +619,7 @@ Start.prototype.dieAndRestart_ = function() {
     t = 10;
     window.santaApp.fire('sound-trigger', 'pnd_freeze');
     window.santaApp.fire('sound-trigger', 'pnd_slide_stop');
+	if (getSetting('restartOnDeath')) return this.game.st_parent.restart();
     this.penguin.die();
     this.dead = true;
 
