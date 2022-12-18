@@ -14,17 +14,13 @@
  * the License.
  */
 
-goog.provide('app.Wave');
-
-goog.require('app.Constants');
-
 /**
  * Constructor for wave group.
  * @constructor
  * @extends {Item}
  * @param {!Game} game The game object.
  */
-app.Wave = function(parent) {
+const Wave = function(parent) {
   this.game = parent;
   this.wave = parent.add.group();
   for (var i = 0; i < 4; i++) {
@@ -45,6 +41,8 @@ app.Wave = function(parent) {
 /**
  * Send wave to back
  */
-app.Wave.prototype.sendBack = function() {
+Wave.prototype.sendBack = function() {
   this.game.world.sendToBack(this.wave);
 };
+
+export { Wave };

@@ -17,7 +17,7 @@
 import {html, LitElement} from 'lit-element';
 import {_msg} from '../magic.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
-import styles from './santa-install.css';
+import styles from './santa-install.scss?inline';
 
 
 const instances = new Set();

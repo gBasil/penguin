@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {html, LitElement} from 'lit-element';
+import {html, LitElement, unsafeCSS} from 'lit-element';
 import * as common from '../../src/core/common.js';
-import styles from './santa-button.css';
+import styles from './santa-button.scss?inline';
 
 
 function createSvgIcon(d) {
@@ -30,7 +30,8 @@ function createSvgIcon(d) {
 
 export class SantaButtonElement extends LitElement {
   static get styles() {
-    return [styles];
+    // return [styles];
+    return [unsafeCSS(styles)];
   }
 
   static get properties() {

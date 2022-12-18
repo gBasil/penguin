@@ -20,9 +20,13 @@
 
 import './src/polyfill/attribute.js';
 import './src/polyfill/css.js';
-import styles from './styles/santa.css';
+import styles from './styles/santa.scss?inline';
 
-document.adoptedStyleSheets = [styles];
+const sheet = new CSSStyleSheet();
+sheet.replaceSync(styles);
+document.adoptedStyleSheets = [sheet];
+
+// document.adoptedStyleSheets = [styles];
 
 import './src/elements/santa-chrome.js';
 import './src/elements/santa-notice.js';

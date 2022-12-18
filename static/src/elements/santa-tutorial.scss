@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@use 'sass:math';
+
 $tutorial-width: 275px;
 $tutorial-height: 270px;
 $tutorial-step-time: 1s;
@@ -75,7 +77,7 @@ video {
 // generate tutorial-steps-N, where it moves -275px each time
 @for $i from 2 through 6 {
   @keyframes tutorial-steps-#{$i} {
-    $part: (100 / $i);
+    $part: math.div(100, $i);
 
     @for $j from 0 through ($i - 1) {
       #{$j * $part}% {

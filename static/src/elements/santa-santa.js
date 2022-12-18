@@ -16,7 +16,7 @@
 
 import * as common from '../core/common.js';
 import {_static, _msg} from '../magic.js';
-import styles from './santa-santa.css';
+import styles from './santa-santa.scss?inline';
 import {LitElement, html} from 'lit-element';
 
 const santaDir = 'n ne e se s sw w nw'.split(' ');

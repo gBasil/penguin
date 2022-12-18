@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import {html, LitElement} from 'lit-element';
+import {html, LitElement, unsafeCSS} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 import * as config from '../core/config.js';
-import styles from './santa-cardnav.css';
+import styles from './santa-cardnav.scss?inline';
 import {_msg, _static} from '../magic.js';
 import './santa-card.js';
 import './santa-install.js';
@@ -35,7 +35,8 @@ export class SantaCardNavElement extends LitElement {
   }
 
   static get styles() {
-    return [styles];
+    // return [styles];
+    return [unsafeCSS(styles)];
   }
 
   constructor() {
@@ -87,7 +88,7 @@ export class SantaCardNavElement extends LitElement {
     const videos = config.videos();
 
     const cardHtml = this.cards.map((sceneName, i) => {
-      const locked = config.lockedTo(sceneName);
+      const locked = false;
 
       const isVideo = videos.indexOf(sceneName) !== -1;
 

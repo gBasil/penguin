@@ -14,13 +14,8 @@
  * the License.
  */
 
-
-goog.provide('app.shared.LevelUp');
-
-goog.require('app.shared.utils');
-
-// We are *leaking* the LevelUp global for backwards compatibility.
-app.shared.LevelUp = LevelUp;
+import $ from 'jquery';
+import { utils } from './utils';
 
 /**
  * Animation for level up.
@@ -108,7 +103,7 @@ LevelUp.prototype.show = function(level, opt_callback) {
  * @param {function()=} opt_callback
  */
 function timeoutOneEvent(elem, event, timeout, opt_callback) {
-  elem = app.shared.utils.unwrapElement(elem);
+  elem = utils.unwrapElement(elem);
 
   // Only trigger callback once.
   var finished = false;
@@ -124,3 +119,5 @@ function timeoutOneEvent(elem, event, timeout, opt_callback) {
   elem.addEventListener(event, finish);
   window.setTimeout(finish, timeout * 1000);
 }
+
+export { LevelUp };

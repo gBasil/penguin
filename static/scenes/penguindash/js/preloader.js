@@ -14,13 +14,9 @@
  * the License.
  */
 
-goog.provide('app.Preloader');
-goog.provide('Preloader');
+const Preloader = function(game) {};
 
-
-app.Preloader = function(game) {};
-
-app.Preloader.prototype.preload = function() {
+Preloader.prototype.preload = function() {
   this.load.crossOrigin = 'anonymous';
   this.load.baseURL = this.game.st_parent.componentDir;
 
@@ -96,6 +92,8 @@ app.Preloader.prototype.preload = function() {
 };
 
 
-app.Preloader.prototype.create = function() {
+Preloader.prototype.create = function() {
   this.game.state.start('Game');
 };
+
+export { Preloader };

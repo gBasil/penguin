@@ -14,10 +14,6 @@
  * the License.
  */
 
-
-goog.provide('app.shared.Tutorial');
-
-
 /**
  * @param {!Array<string>|string} arg
  * @return {!Array<string>}
@@ -30,7 +26,7 @@ function splitAll(arg) {
 }
 
 
-app.shared.Tutorial = class Tutorial {
+const Tutorial = class Tutorial {
 
   /**
    * @param {!Array<string>|string} tutorials All tutorials.
@@ -70,3 +66,5 @@ app.shared.Tutorial = class Tutorial {
    */
   dispose() {}
 };
+
+export { Tutorial };

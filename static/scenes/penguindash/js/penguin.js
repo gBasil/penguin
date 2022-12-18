@@ -14,9 +14,7 @@
  * the License.
  */
 
-goog.provide('app.Penguin');
-
-goog.require('app.Constants');
+import { Constants } from './constants';
 
 /**
  * Constructor for scoring items that the player can catch.
@@ -24,7 +22,7 @@ goog.require('app.Constants');
  * @extends {Item}
  * @param {!Game} game The game object.
  */
-app.Penguin = function(parent) {
+const Penguin = function(parent) {
   this.game = parent;
   this.elem = parent.add.sprite('-200', '-200', 'sprite-penguin');
   this.shadow = this.elem.addChild(parent.make.sprite(0, 6, 'shadow-penguin'));
@@ -62,7 +60,7 @@ app.Penguin = function(parent) {
 /**
  * Adjust angle penguin is pointing.
  */
-app.Penguin.prototype.adjustAngle = function() {
+Penguin.prototype.adjustAngle = function() {
   if (this.elem.body.velocity.x !== 0 || this.elem.body.velocity.y !== 0) {
     let theta = Math.atan2(
         this.elem.body.velocity.y,
@@ -82,7 +80,7 @@ app.Penguin.prototype.adjustAngle = function() {
  * Center penguin in cell.
  * @param {!Phaser.element} first Phaser element to center in.
  */
-app.Penguin.prototype.centerInElement = function(first) {
+Penguin.prototype.centerInElement = function(first) {
   let center = {x: first.x + first.width / 2, y: first.y + first.height / 2};
   this.elem.x = center.x;
   this.elem.y = center.y;
@@ -93,7 +91,7 @@ app.Penguin.prototype.centerInElement = function(first) {
  * Incrementally change velocity.
  * @param {float} percent Percent of velocity change.
  */
-app.Penguin.prototype.multiplyVelocity = function(percent) {
+Penguin.prototype.multiplyVelocity = function(percent) {
   this.elem.body.velocity.x = this.elem.body.velocity.x * percent;
   this.elem.body.velocity.y = this.elem.body.velocity.y * percent;
 };
@@ -102,9 +100,9 @@ app.Penguin.prototype.multiplyVelocity = function(percent) {
 /**
  * Play die animation.
  */
-app.Penguin.prototype.die = function() {
+Penguin.prototype.die = function() {
   this.dustAlpha(0);
-  this.state = app.Constants.PENGUIN_STATES.falling;
+  this.state = Constants.PENGUIN_STATES.falling;
   this.shadow.alpha = 0;
   this.elem.animations.play('falling');
   this.elem.sendToBack();
@@ -113,9 +111,9 @@ app.Penguin.prototype.die = function() {
 /**
  * Play accelerating animation.
  */
-app.Penguin.prototype.boost = function() {
-  if (this.state != app.Constants.PENGUIN_STATES.accelerating) {
-    this.state = app.Constants.PENGUIN_STATES.accelerating;
+Penguin.prototype.boost = function() {
+  if (this.state != Constants.PENGUIN_STATES.accelerating) {
+    this.state = Constants.PENGUIN_STATES.accelerating;
     this.elem.animations.play('accelerating');
   }
 };
@@ -123,15 +121,15 @@ app.Penguin.prototype.boost = function() {
 /**
  * Play slide state.
  */
-app.Penguin.prototype.slide = function() {
-  this.state = app.Constants.PENGUIN_STATES.sliding;
+Penguin.prototype.slide = function() {
+  this.state = Constants.PENGUIN_STATES.sliding;
   this.elem.animations.play('slide');
 };
 
 /**
  * Play slide state.
  */
-app.Penguin.prototype.dustAlpha = function(alpha) {
+Penguin.prototype.dustAlpha = function(alpha) {
   this.dust.alpha = alpha;
 };
 
@@ -139,10 +137,12 @@ app.Penguin.prototype.dustAlpha = function(alpha) {
 /**
  * Reset penguin movement.
  */
-app.Penguin.prototype.reset = function() {
+Penguin.prototype.reset = function() {
   this.elem.body.velocity.x = 0;
   this.elem.body.velocity.y = 0;
   this.shadow.alpha = 1;
   this.slide();
   this.elem.bringToTop();
 };
+
+export { Penguin };

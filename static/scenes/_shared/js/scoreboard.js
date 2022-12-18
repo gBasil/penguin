@@ -14,14 +14,7 @@
  * the License.
  */
 
-goog.provide('app.shared.Scoreboard');
-
-// Load the old Constants global for backwards compatibility
-goog.require('Constants');
-
-// We are *leaking* the Scoreboard global for backwards compatibility.
-app.shared.Scoreboard = Scoreboard;
-
+import { Constants } from '../../penguindash/js/constants';
 
 function constantWithDefault(key, d) {
   const raw = Constants ? Constants[key] : undefined;
@@ -160,3 +153,5 @@ Scoreboard.prototype.announce_ = function() {
     window.santaApp.fire('game-score', detail);
   }, 1);
 };
+
+export { Scoreboard };

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import styles from './santa-gameloader.css';
+import styles from './santa-gameloader.scss?inline';
 
 import {dedup, resolvable} from '../lib/promises.js';
 
@@ -161,7 +161,10 @@ class SantaGameLoaderElement extends HTMLElement {
     this._resizeCheckLeft = 0;
 
     const root = this.attachShadow({mode: 'open'});
-    root.adoptedStyleSheets = [styles];
+	const sheet = new CSSStyleSheet();
+	sheet.replaceSync(styles);
+    root.adoptedStyleSheets = [sheet];
+    // root.adoptedStyleSheets = [styles];
 
     // Use this container to manage focus on contained iframes, rather than setting classes or
     // attributes on the loader itself.

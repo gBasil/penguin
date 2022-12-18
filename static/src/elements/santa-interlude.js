@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import styles from './santa-interlude.css';
+import styles from './santa-interlude.scss?inline';
 import {_static} from '../../src/magic.js';
 import {loadAnimation, buildSafeResize} from '../../src/deps/lottie.js';
 import '../../src/polyfill/attribute.js';
@@ -31,7 +31,10 @@ class SantaInterludeElement extends HTMLElement {
     super();
 
     this.attachShadow({mode: 'open'});
-    this.shadowRoot.adoptedStyleSheets = [styles];
+	const sheet = new CSSStyleSheet();
+	sheet.replaceSync(styles);
+    this.shadowRoot.adoptedStyleSheets = [sheet];
+    // this.shadowRoot.adoptedStyleSheets = [styles];
 
     this._animatePromise = null;
     this._animateResolve = null;

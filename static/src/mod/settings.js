@@ -8,8 +8,16 @@ const settings = [
 	},
 ];
 
-const values = init();
+// Initialize values
+let values = init();
 save();
+
+// Update settings if localStorage changes
+window.addEventListener('storage', e => {
+	if (e.key === 'penguinSettings') {
+		values = init();
+	}
+});
 
 /**
  * Initializes the setting values
@@ -37,7 +45,6 @@ function save() {
 }
 
 function setSetting(key, val) {
-	// console.debug(`Setting ${key} to ${val}`);
 	values[key] = val;
 	save();
 }
@@ -59,18 +66,5 @@ function getSetting(key) {
 	}
 	return value;
 }
-
-const config = (key) => {
-	switch (key) {
-		case 'timeLose':
-			// console.log(window.noDeath === true);
-			// throw new Error();
-			return window.noDeath === true ? 0 : 20;
-	}
-};
-
-// Wow, Closure Compiler is weird when it comes to imports and exports
-// Hacky fix that might be fixable by switching to Vite
-window.peng = { getSetting, setSetting, settings };
 
 export { getSetting, setSetting, settings };

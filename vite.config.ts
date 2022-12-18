@@ -5,7 +5,7 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			input: {
-				main: resolve(__dirname, 'prod/index.html'),
+				main: resolve(__dirname, 'index.html'),
 				penguin: resolve(__dirname, 'static/scenes/penguindash/index.html'),
 			},
 		},

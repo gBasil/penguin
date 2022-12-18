@@ -21,7 +21,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,600" />
-  <link rel="stylesheet" href="penguindash-scene.css" />
+  <link rel="stylesheet" href="penguindash-scene.scss" />
 </head>
 <body>
 
@@ -42,13 +42,10 @@
 </div>
 
 <!-- TODO(samthor): this is 2.6mb (!), include minified version -->
-<script src="../../third_party/lib/phaser/phaser-arcade-physics.js"></script>
-<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./phaser-arcade-physics.js"></script>
 <script type="module">
-	// import * as peng from '../../src/mod/settings.js';
-	// console.log(peng);
   import api from '../../src/scene/api.js';
-  import Game from './:closure.js';
+  import { Game } from './js/game.js';
 
   api.preload.sounds('pnd_load_sounds');
   api.preload.images(

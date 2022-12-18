@@ -16,7 +16,7 @@
 
 import {html, LitElement} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined';
-import styles from './santa-card.css';
+import styles from './santa-card.scss?inline';
 import scenes from '../strings/scenes.js';
 import {_static, _msg} from '../magic.js';
 import {hrefForScene} from '../scene/route.js';

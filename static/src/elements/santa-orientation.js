@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {html, LitElement} from "lit-element";
-import styles from './santa-orientation.css';
+import {html, LitElement, unsafeCSS} from "lit-element";
+import styles from './santa-orientation.scss?inline';
 import {_msg} from '../magic.js';
 
 class SantaOrientationElement extends LitElement {
@@ -26,7 +26,8 @@ class SantaOrientationElement extends LitElement {
   }
 
   static get styles() {
-    return [styles];
+    // return [styles];
+    return [unsafeCSS(styles)];
   }
 
   render() {

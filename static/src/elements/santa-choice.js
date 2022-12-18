@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import styles from './santa-choice.css';
+import styles from './santa-choice.scss?inline';
 
 const hasResizeObserver = Boolean(self.ResizeObserver);
 

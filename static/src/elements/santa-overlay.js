@@ -16,7 +16,7 @@
 
 import {html, LitElement} from 'lit-element';
 import {until} from 'lit-html/directives/until.js';
-import styles from './santa-overlay.css';
+import styles from './santa-overlay.scss?inline';
 import {_msg} from '../magic.js';
 import './santa-button.js';
 import { getSetting, setSetting, settings } from '../mod/settings.js';
@@ -32,7 +32,9 @@ export class SantaOverlayElement extends LitElement {
 
   constructor() {
     super();
-    this.shadowRoot.adoptedStyleSheets = [styles];
+	const sheet = new CSSStyleSheet();
+	sheet.replaceSync(styles);
+    this.shadowRoot.adoptedStyleSheets = [sheet];
   }
 
   _dispatchRestart(e) {

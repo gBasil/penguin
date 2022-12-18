@@ -23,8 +23,8 @@
 
 import {frame} from '../lib/promises.js';
 
-const firebase = window.firebase;
-const remoteConfig = firebase.remoteConfig();
+// const firebase = window.firebase;
+// const remoteConfig = firebase.remoteConfig();
 const listeners = new Set();
 
 const memoized = {
@@ -106,7 +106,7 @@ function expontentialDelay(range, failures = 0) {
     refreshTimeout = localTimeout;
   }
 
-  queueRefresh();
+//   queueRefresh();
 })();
 
 
@@ -336,23 +336,10 @@ export function routesSnapshot() {
 
 
 /**
- * @param {string} route to return date locked until
- * @return {number|undefined} date within Dec locked until (0 for always)
- */
-export function lockedTo(route) {
-  if (!isLocked(route)) {
-    return undefined;
-  }
-
-  const {sceneLock} = memoized;
-  return sceneLock[route];
-}
-
-
-/**
  * @param {boolean} fallback whether to show old codebase
  * @return {string} the scene to show for "/" or "index"
  */
 export function indexScene(fallback) {
-  return remoteConfig.getString(fallback ? 'fallbackIndexScene' : 'indexScene') || 'index';
+//   return remoteConfig.getString(fallback ? 'fallbackIndexScene' : 'indexScene') || 'index';
+  return 'index';
 }

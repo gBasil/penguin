@@ -62,7 +62,9 @@ export function buildLoader(loadMethod, fallback=false) {
     }
 
     // Load the scene HTML but include the ID of the route. Useful for videos.
-    const url = urlFor(sceneName, fallback, route, hash);
+    // const url = urlFor(sceneName, fallback, route, hash);
+    // const url = import.meta.env.MODE === 'development' ? 'http://localhost:3000/static/scenes/penguindash/index.html' : '';
+    const url = '/static/scenes/penguindash/index.html';
     activeSceneName = sceneName;
 
     window.dispatchEvent(new CustomEvent('loader-route', {detail: route}));

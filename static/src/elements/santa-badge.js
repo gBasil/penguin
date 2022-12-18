@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {html, LitElement} from 'lit-element';
+import {html, LitElement, unsafeCSS} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined';
-import styles from './santa-badge.css';
+import styles from './santa-badge.scss?inline';
 import {_msg} from '../magic.js';
 
 
@@ -38,7 +38,8 @@ export class SantaBadgeElement extends LitElement {
   }
 
   static get styles() {
-    return [styles];
+	  // return [styles];
+    return [unsafeCSS(styles)];
   }
 
   constructor() {

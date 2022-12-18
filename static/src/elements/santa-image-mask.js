@@ -17,7 +17,7 @@
 import {html, LitElement} from 'lit-element';
 import {directive} from 'lit-html';
 import * as prefix from '../lib/prefix.js';
-import styles from './santa-image-mask.css';
+import styles from './santa-image-mask.scss?inline';
 
 
 const clips = [

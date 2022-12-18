@@ -14,20 +14,18 @@
  * the License.
  */
 
-goog.provide('app.Start');
-goog.provide('Start');
-
-goog.require('app.config.Levels');
-goog.require('app.Constants');
-goog.require('app.Penguin');
-goog.require('app.Wave');
-
+import $ from 'jquery';
+import { getSetting } from '../../../src/mod/settings';
+import { Levels } from './config/levels';
+import { Constants } from './constants';
+import { Penguin } from './penguin';
+import { Wave } from './wave';
 
 /**
  * Constructor for Phaser Game
  * @constructor
  */
-app.Start = function(game) {
+const Start = function(game) {
   this.game = game;
   game.pause = this.pause.bind(this);
   game.unpause = this.unpause.bind(this);
@@ -42,7 +40,7 @@ app.Start = function(game) {
 /**
  * Setup game functionality and start game. Called by Phaser.
  */
-app.Start.prototype.create = function() {
+Start.prototype.create = function() {
   // State variables
   this.onPath = true;
   this.onFastIce = false;
@@ -51,9 +49,9 @@ app.Start.prototype.create = function() {
   this.timer = 0;
   this.totalTimer = 0;
   this.level = 1;
-  this.maxLevels = app.Constants.TOTAL_LEVELS;
-  this.movementForce = app.Constants.MOVEMENT_FORCE;
-  this.movementMultiple = app.Constants.SPEED_MULTIPLE_DEFAULT;
+  this.maxLevels = Constants.TOTAL_LEVELS;
+  this.movementForce = Constants.MOVEMENT_FORCE;
+  this.movementMultiple = Constants.SPEED_MULTIPLE_DEFAULT;
   this.groups = [];
   this.gameStartTime = +new Date;
 
@@ -61,21 +59,21 @@ app.Start.prototype.create = function() {
   this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   this.game.scale.pageAlignHorizontally = true;
   this.game.scale.pageAlignVertically = true;
-  this.world.setBounds(0, 0, app.Constants.WORLD_WIDTH,
-      app.Constants.WORLD_HEIGHT);
+  this.world.setBounds(0, 0, Constants.WORLD_WIDTH,
+      Constants.WORLD_HEIGHT);
   this.setScale(this.game.st_parent.scale);
   this.time.events.loop(Phaser.Timer.SECOND, this.updateCounter_, this);
   this.physics.startSystem(Phaser.Physics.ARCADE);
 
   // Setup Penguin
-  this.penguin = new app.Penguin(this);
+  this.penguin = new Penguin(this);
   this.camera.follow(this.penguin.elem);
 
   // Add background video
   if (!this.isMobileOrIE) {
     this.video = this.game.add.video('background');
     this.vidsprite = this.video.addToWorld(0, 0, 0, 0, 2.2, 3);
-    this.wave = new app.Wave(this);
+    this.wave = new Wave(this);
   }
 
   // Stuff for debugging
@@ -102,7 +100,7 @@ app.Start.prototype.create = function() {
 /**
  * Update canvas with game play. Called by Phaser.
  */
-app.Start.prototype.update = function() {
+Start.prototype.update = function() {
   this.game.st_parent.resolveStart();
 
   if (!this.isMobileOrIE) {
@@ -127,10 +125,10 @@ app.Start.prototype.update = function() {
   }
 
   if (!this.onFastIce) {
-    this.movementMultiple = app.Constants.SPEED_MULTIPLE_DEFAULT;
+    this.movementMultiple = Constants.SPEED_MULTIPLE_DEFAULT;
 
     // Inertia
-    this.penguin.multiplyVelocity(app.Constants.SPEED_DECAY_DEFAULT);
+    this.penguin.multiplyVelocity(Constants.SPEED_DECAY_DEFAULT);
   }
   window.santaApp.fire('sound-trigger', {name: 'pnd_fast_ice', args: [this.onFastIce]});
   // Reset flags
@@ -197,7 +195,7 @@ app.Start.prototype.update = function() {
  * Scale world when needed.
  * @param {number} scale A scale between 0 and 1 on how much to scale.
  */
-app.Start.prototype.setScale = function(scale) {
+Start.prototype.setScale = function(scale) {
   this.game.scale.setGameSize(this.game.st_parent.sceneElem.width() / scale,
       this.game.st_parent.sceneElem.height() / scale);
 };
@@ -206,7 +204,7 @@ app.Start.prototype.setScale = function(scale) {
 /**
  * Pause game.
  */
-app.Start.prototype.pause = function() {
+Start.prototype.pause = function() {
   this.game.paused = true;
   window.santaApp.fire('sound-trigger', 'pnd_slide_stop');
 };
@@ -215,7 +213,7 @@ app.Start.prototype.pause = function() {
 /**
  * Unpause game.
  */
-app.Start.prototype.unpause = function() {
+Start.prototype.unpause = function() {
   this.game.paused = false;
   window.santaApp.fire('sound-trigger', 'pnd_slide_start');
 };
@@ -225,9 +223,9 @@ app.Start.prototype.unpause = function() {
  * Initialize levels of the game.
  * @private
  */
-app.Start.prototype.initLevels_ = function() {
+Start.prototype.initLevels_ = function() {
   this.levels = [];
-  this.levelData = app.config.Levels;
+  this.levelData = Levels;
 
   // loop through levels
   for (let i = 0; i < this.maxLevels; i++) {
@@ -275,11 +273,11 @@ app.Start.prototype.initLevels_ = function() {
  * @return {object} Object of Phaser groups.
  * @private
  */
-app.Start.prototype.initGroups_ = function() {
+Start.prototype.initGroups_ = function() {
   var groups = {};
 
-  for (var i = 0; i < app.Constants.GROUPS.length; i++) {
-    let config = app.Constants.GROUPS[i];
+  for (var i = 0; i < Constants.GROUPS.length; i++) {
+    let config = Constants.GROUPS[i];
 
     // Object.assign Polyfill
     if (typeof Object.assign != 'function') {
@@ -328,7 +326,7 @@ app.Start.prototype.initGroups_ = function() {
  * @param {object} item Config for element.
  * @private
  */
-app.Start.prototype.additionalElementInit_ = function(element, item) {
+Start.prototype.additionalElementInit_ = function(element, item) {
   if (item.g != 'character') {
     element.body.immovable = true;
     element.scale.setTo(0.5, 0.5);
@@ -338,7 +336,7 @@ app.Start.prototype.additionalElementInit_ = function(element, item) {
     case 'obstacle':
       this.debugElements.push(element);
 
-      let config = app.Constants.OBSTACLES[item.t];
+      let config = Constants.OBSTACLES[item.t];
 
       if (config && config.width && config.height && config.square) {
         element.body.setSize(config.width, config.height);
@@ -356,8 +354,8 @@ app.Start.prototype.additionalElementInit_ = function(element, item) {
     case 'character':
       element.body.setSize(0, 0);
       if (!this.isMobileOrIE) {
-        if (typeof app.Constants.CHARACTERS[item.t] != 'undefined') {
-          element.animations.add('default', app.Constants.CHARACTERS[item.t]);
+        if (typeof Constants.CHARACTERS[item.t] != 'undefined') {
+          element.animations.add('default', Constants.CHARACTERS[item.t]);
         } else {
           element.animations.add('default');
         }
@@ -371,7 +369,7 @@ app.Start.prototype.additionalElementInit_ = function(element, item) {
         params[item.c.axis] = item.c.movement;
 
         this.add.tween(element)
-            .to(params, item.c.duration || app.Constants.SPEED_MOVING_ICE,
+            .to(params, item.c.duration || Constants.SPEED_MOVING_ICE,
             Phaser.Easing.Cubic.InOut, true, 0, -1, true);
       }
     break;
@@ -413,7 +411,7 @@ app.Start.prototype.additionalElementInit_ = function(element, item) {
  * @param {!Phaser.object} group Phaser object for group.
  * @private
  */
-app.Start.prototype.additionalGroupInit_ = function(groups, level) {
+Start.prototype.additionalGroupInit_ = function(groups, level) {
   for (var key in groups) {
     switch (key) {
       case 'prize':
@@ -455,7 +453,7 @@ app.Start.prototype.additionalGroupInit_ = function(groups, level) {
  * @param {!Phaser.object} group Phaser object for group.
  * @private
  */
-app.Start.prototype.additionalGroupHandling_ = function(config, group) {
+Start.prototype.additionalGroupHandling_ = function(config, group) {
   if (config.update) {
     for (let i = 0; i < config.update.length; i++) {
       switch (config.update[i]) {
@@ -512,7 +510,7 @@ app.Start.prototype.additionalGroupHandling_ = function(config, group) {
  * @param {number} level Level number starting from 1.
  * @private
  */
-app.Start.prototype.showLevel_ = function(level) {
+Start.prototype.showLevel_ = function(level) {
 
   var lvl = level || this.level;
 
@@ -547,7 +545,7 @@ app.Start.prototype.showLevel_ = function(level) {
  * Update timer.
  * @private
  */
-app.Start.prototype.updateCounter_ = function() {
+Start.prototype.updateCounter_ = function() {
   this.timer++;
 
   this.game.st_parent.scoreboard.onFrame(-1);
@@ -558,11 +556,11 @@ app.Start.prototype.updateCounter_ = function() {
  * Overlap callback for fast ice.
  * @private
  */
-app.Start.prototype.overlapFastIce_ = function() {
+Start.prototype.overlapFastIce_ = function() {
   this.onFastIce = true;
 
   if (this.movementMultiple == 1) {
-    this.movementMultiple = app.Constants.SPEED_MULTIPLE_FAST;
+    this.movementMultiple = Constants.SPEED_MULTIPLE_FAST;
     this.penguin.multiplyVelocity(this.movementMultiple);
   }
 };
@@ -574,7 +572,7 @@ app.Start.prototype.overlapFastIce_ = function() {
  * @param {!Phaser.group} group2 Group object for scene element.
  * @private
  */
-app.Start.prototype.overlapMovement_ = function(group, group2) {
+Start.prototype.overlapMovement_ = function(group, group2) {
   this.onMoving = true;
 
   if (this.movingOffset == null) {
@@ -603,17 +601,17 @@ app.Start.prototype.overlapMovement_ = function(group, group2) {
  * @param {!Phaser.group} prize Group object for prize element.
  * @private
  */
-app.Start.prototype.overlapPrize_ = function(penguin, prize) {
+Start.prototype.overlapPrize_ = function(penguin, prize) {
   prize.kill();
   window.santaApp.fire('sound-trigger', 'pnd_pickup');
-  this.game.st_parent.scoreboard.addScore(app.Constants.POINTS_GIFT_BASIC);
+  this.game.st_parent.scoreboard.addScore(Constants.POINTS_GIFT_BASIC);
 };
 
 /**
  * Run animation for falling and restart level.
  * @private
  */
-app.Start.prototype.dieAndRestart_ = function() {
+Start.prototype.dieAndRestart_ = function() {
   var t;
 
   if (!this.dead) {
@@ -626,14 +624,11 @@ app.Start.prototype.dieAndRestart_ = function() {
     window.setTimeout(() => {
       this.dead = false;
       this.restartLevel_();
-	//   console.log(window.peng);
-      if (!window.peng.getSetting('disableDeathPenalty')) this.game.st_parent.scoreboard.onFrame(-app.Constants.TIME_LOSE);
-    //   this.game.st_parent.scoreboard.onFrame(-app.Constants.TIME_LOSE);
-    //   this.game.st_parent.scoreboard.onFrame(-config('timeLose'));
+      if (!getSetting('disableDeathPenalty')) this.game.st_parent.scoreboard.onFrame(-Constants.TIME_LOSE);
     }, 2500);
   }
 
-  this.penguin.multiplyVelocity(app.Constants.SPEED_DECAY_FAST);
+  this.penguin.multiplyVelocity(Constants.SPEED_DECAY_FAST);
 };
 
 
@@ -642,7 +637,7 @@ app.Start.prototype.dieAndRestart_ = function() {
  * @param {!Phaser.group} penguin Group object for penguin.
  * @param {!Phaser.group} finish Group object for finish element.
  */
-app.Start.prototype.finishLevel_ = function(penguin, finish) {
+Start.prototype.finishLevel_ = function(penguin, finish) {
   //console.log('y: ' + penguin.body.overlapY);
   //console.log('x: ' + penguin.body.overlapX);
 
@@ -653,7 +648,7 @@ app.Start.prototype.finishLevel_ = function(penguin, finish) {
   } else {
     this.level++;
     this.game.st_parent.scoreboard.setLevel(this.level - 1);
-    this.game.st_parent.scoreboard.addScore(app.Constants.POINTS_LEVEL_COMPLETE);
+    this.game.st_parent.scoreboard.addScore(Constants.POINTS_LEVEL_COMPLETE);
     this.game.st_parent.levelUp.show(this.level, this.restartLevel_.bind(this));
     window.santaApp.fire('sound-trigger', 'pnd_level_up');
   }
@@ -664,7 +659,7 @@ app.Start.prototype.finishLevel_ = function(penguin, finish) {
  * Restart game at current level.
  * @private
  */
-app.Start.prototype.restartLevel_ = function() {
+Start.prototype.restartLevel_ = function() {
   this.totalTimer += this.timer;
   this.timer = 0;
   this.penguin.reset();
@@ -677,7 +672,7 @@ app.Start.prototype.restartLevel_ = function() {
 /**
  * Stops the game as game over. Displays the game over screen as well.
  */
-app.Start.prototype.gameover_ = function() {
+Start.prototype.gameover_ = function() {
   this.game.st_parent.freezeGame();
   this.game.st_parent.gameoverView.show();
   window.santaApp.fire('sound-trigger', 'music_ingame_gameover');
@@ -694,7 +689,7 @@ app.Start.prototype.gameover_ = function() {
 /**
  * Device orientation callback.
  */
-app.Start.prototype.handleOrientation_ = function(event) {
+Start.prototype.handleOrientation_ = function(event) {
   let e = event.originalEvent;
 
   // Device Orientation API
@@ -709,3 +704,5 @@ app.Start.prototype.handleOrientation_ = function(event) {
     }
   }
 };
+
+export { Start };

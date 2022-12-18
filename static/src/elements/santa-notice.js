@@ -15,7 +15,7 @@
  */
 
 import {html, LitElement} from 'lit-element';
-import styles from './santa-notice.css';
+import styles from './santa-notice.scss?inline';
 import {_msg} from '../magic.js';
 import {localStorage} from '../../src/storage.js';
 

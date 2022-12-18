@@ -21,14 +21,16 @@
  * library code, like `Promise`, until the support library is loaded.
  */
 
-import config from './src/:config.json';
+// import config from './src/:config.json';
 import checkFallback from './src/fallback.js';
 import * as load from './src/load.js';
-import {initialize} from './src/firebase.js';
+// import {initialize} from './src/firebase.js';
 import onInteractive from './src/interactive.js';
 import isAndroidTWA from './src/android-twa.js';
 
-window.santaConfig = config;
+const config = {
+	staticScope: 'http://localhost:3000'
+}
 
 // In prod, the documentElement has `lang="en"` or similar.
 const documentLang = document.documentElement.lang || null;
@@ -57,27 +59,27 @@ window.addEventListener('beforeinstallprompt', (event) => {
   window.installEvent = event;
 });
 
-window.sw = null;
-let hasInstalledServiceWorker = false;
+// window.sw = null;
+// let hasInstalledServiceWorker = false;
 
-if ('serviceWorker' in navigator) {
-  // Register the SW in the served language, not the request language (as this isn't available
-  // on the naked domain anyway).
-  const params = new URLSearchParams();
-  if (isProd) {
-    params.set('baseurl', config.baseurl);
-  }
-  window.sw = navigator.serviceWorker.register(`/sw.js?${params.toString()}`).catch((err) => {
-    console.warn('sw failed to register', err);
-    return null;
-  });
-  hasInstalledServiceWorker = Boolean(navigator.serviceWorker.controller);
+// if ('serviceWorker' in navigator) {
+//   // Register the SW in the served language, not the request language (as this isn't available
+//   // on the naked domain anyway).
+//   const params = new URLSearchParams();
+//   if (isProd) {
+//     params.set('baseurl', config.baseurl);
+//   }
+//   window.sw = navigator.serviceWorker.register(`/sw.js?${params.toString()}`).catch((err) => {
+//     console.warn('sw failed to register', err);
+//     return null;
+//   });
+//   hasInstalledServiceWorker = Boolean(navigator.serviceWorker.controller);
 
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    loaded = true;  // pretend that we're loaded, so that Safari doesn't send us to an error page
-    window.location.reload();
-  });
-}
+//   navigator.serviceWorker.addEventListener('controllerchange', () => {
+//     loaded = true;  // pretend that we're loaded, so that Safari doesn't send us to an error page
+//     window.location.reload();
+//   });
+// }
 
 
 // Load support code for fallback browsers like IE11, non-Chromium Edge, and friends. This is
@@ -113,28 +115,28 @@ function startup() {
 
   // Wait for both Firebase Remote Config and the Service Worker (optional), then load entrypoint.
   // This is racey in that a Service Worker change might trigger a reload.
-  const ready = Promise.all([initialize(), window.sw]);
-  ready.then(([remoteConfig, registration]) => {
-    if (remoteConfig.getBoolean('switchOff')) {
-      throw new Error('switchOff');
-    }
+//   const ready = Promise.all([initialize(), window.sw]);
+//   ready.then(([remoteConfig, registration]) => {
+    // if (remoteConfig.getBoolean('switchOff')) {
+    //   throw new Error('switchOff');
+    // }
 
     // Allow Firebase force or optional ?static=... for new releases.
-    const forceStaticScope = remoteConfig.getString('staticScope') || null;
-    if (forceStaticScope) {
-      if (!isProd) {
-        // This arguably makes no sense here, as the files probably have the wrong suffix (i18n),
-        // and you control your own dev environment.
-        console.warn('ignoring custom static scope for dev', forceStaticScope);
-      } else {
-        console.warn('using custom static scope', forceStaticScope);
-        try {
-          config.staticScope = sanitizeStaticScope(forceStaticScope);
-        } catch (e) {
-          // don't set an invalid URL
-        }
-      }
-    }
+    // const forceStaticScope = remoteConfig.getString('staticScope') || null;
+    // if (forceStaticScope) {
+    //   if (!isProd) {
+    //     // This arguably makes no sense here, as the files probably have the wrong suffix (i18n),
+    //     // and you control your own dev environment.
+    //     console.warn('ignoring custom static scope for dev', forceStaticScope);
+    //   } else {
+    //     console.warn('using custom static scope', forceStaticScope);
+    //     try {
+    //       config.staticScope = sanitizeStaticScope(forceStaticScope);
+    //     } catch (e) {
+    //       // don't set an invalid URL
+    //     }
+    //   }
+    // }
 
     document.body.setAttribute('static', config.staticScope);
 
@@ -143,5 +145,5 @@ function startup() {
     return load.script(entrypoint, fallback && isProd ? '' : 'module').then(() => {
       loaded = true;
     });
-  });
+//   });
 }

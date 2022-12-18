@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-import {html, LitElement} from 'lit-element';
-import styles from './santa-chrome.css';
+import {html, LitElement, unsafeCSS} from 'lit-element';
+import styles from './santa-chrome.scss?inline';
 import * as prefix from '../lib/prefix.js';
 import './santa-button.js';
 import * as common from '../core/common.js';
 import {_msg} from '../magic.js';
 import isAndroid from '../core/android.js';
-
-
-const year = new Date().getFullYear();
-const countdownTo = +Date.UTC(year, 11, 24, 10, 0, 0);  // 24th Dec at 10:00 UTC
-
 
 const paths = {
   pause: `M6 19h4V5H6v14zm8-14v14h4V5h-4z`,
@@ -61,7 +56,7 @@ export class SantaChromeElement extends LitElement {
   }
 
   static get styles() {
-    return [styles];
+    return [unsafeCSS(styles)];
   }
 
   constructor() {

@@ -14,17 +14,14 @@
  * the License.
  */
 
-goog.provide('app.Game');
-
-goog.require('app.Constants');
-goog.require('app.Preloader');
-goog.require('app.Start');
-goog.require('app.shared.LevelUp');
-goog.require('app.shared.Gameover');
-goog.require('app.shared.Scoreboard');
-goog.require('app.shared.Tutorial');
-
-
+import $ from 'jquery';
+import { Constants } from './constants';
+import { Preloader } from './preloader';
+import { Start } from './start';
+import { LevelUp } from '../../_shared/js/levelup';
+import { Gameover } from '../../_shared/js/gameover';
+import { Scoreboard } from '../../_shared/js/scoreboard';
+import { Tutorial } from '../../_shared/js/tutorial';
 
 /**
  * Main game class.
@@ -32,7 +29,7 @@ goog.require('app.shared.Tutorial');
  * @constructor
  * @export
  */
-app.Game = function(elem, componentDir) {
+const Game = function(elem, componentDir) {
   this.startPromise = new Promise((resolve) => {
     this.resolveStart = resolve;
   });
@@ -57,10 +54,10 @@ app.Game = function(elem, componentDir) {
   this.watchSceneSize_();
   this.watchOrientation_();
 
-  this.scoreboard = new app.shared.Scoreboard(this, this.elem.find('.board'), app.Constants.TOTAL_LEVELS);
-  this.levelUp = new app.shared.LevelUp(this, this.elem.find('.levelup'), this.elem.find('.levelup--number'));
-  this.gameoverView = new app.shared.Gameover(this, this.elem.find('.gameover'));
-  this.tutorial = new app.shared.Tutorial('device-tilt keys-arrows spacenav-arrows');
+  this.scoreboard = new Scoreboard(this, this.elem.find('.board'), Constants.TOTAL_LEVELS);
+  this.levelUp = new LevelUp(this, this.elem.find('.levelup'), this.elem.find('.levelup--number'));
+  this.gameoverView = new Gameover(this, this.elem.find('.gameover'));
+  this.tutorial = new Tutorial('device-tilt keys-arrows spacenav-arrows');
 
   this.gyroPresent = false;
   var detectGyro = function(event){
@@ -84,7 +81,7 @@ app.Game = function(elem, componentDir) {
 /**
  * Starts the game. Should only be called once.
  */
-app.Game.prototype.start = function() {
+Game.prototype.start = function() {
   this.tutorial.start();
 
   //in case the game hasn't been fully loaded
@@ -94,26 +91,27 @@ app.Game.prototype.start = function() {
   this.scoreboard.reset();
   this.scoreboard.restart();
 
+	// I can't get this to work with Vite, and it seems to resize by itself anyway
 
   // make sure canvas is real size
-  const canvas = this._realElem.querySelector('canvas');
-  function checkSize() {
+//   const canvas = this._realElem.querySelector('canvas');
+//   function checkSize() {
 
-    if (canvas.width && canvas.height) {
-      return;  // great
-    }
-    window.dispatchEvent(new Event('resize'));  // kick phaser
+//     if (canvas.width && canvas.height) {
+//       return;  // great
+//     }
+//     window.dispatchEvent(new Event('resize'));  // kick phaser
 
-    window.requestAnimationFrame(checkSize);
-  }
-  checkSize();
+//     window.requestAnimationFrame(checkSize);
+//   }
+//   checkSize();
 };
 
 
 /**
  * Restarts the game. Can be called at any time.
  */
-app.Game.prototype.restart = function() {
+Game.prototype.restart = function() {
   this.initGame(false);
 
   this.scoreboard.reset();
@@ -124,10 +122,10 @@ app.Game.prototype.restart = function() {
  * Initialize the game to speed up start time.
  @param {boolean} pause Indicate if the game should pause after initialization.
  */
-app.Game.prototype.initGame = function(pause) {
+Game.prototype.initGame = function(pause) {
   window.PhaserGlobal = {};
   window.PhaserGlobal.disableAudio = true;
-
+  
   if(this.game) {
     this.game.destroy();
   }
@@ -137,8 +135,8 @@ app.Game.prototype.initGame = function(pause) {
 
   this.game.penguinPauseOnStart = pause;
 
-  this.game.state.add('Preloader', app.Preloader);
-  this.game.state.add('Game', app.Start);
+  this.game.state.add('Preloader', Preloader);
+  this.game.state.add('Game', Start);
   this.game.state.start('Preloader');
 };
 
@@ -147,7 +145,7 @@ app.Game.prototype.initGame = function(pause) {
  * Scale the game down for smaller resolutions.
  * @param {number} scale A scale between 0 and 1 on how much to scale.
  */
-app.Game.prototype.setScale = function(scale) {
+Game.prototype.setScale = function(scale) {
   this.scale = scale;
   if (this.game && this.game.world) {
     this.game.setScale(scale);
@@ -159,7 +157,7 @@ app.Game.prototype.setScale = function(scale) {
  * Freezes the game. Stops the onFrame loop and stops any CSS3 animations.
  * Used both for game over and pausing.
  */
-app.Game.prototype.freezeGame = function() {
+Game.prototype.freezeGame = function() {
   this.isPlaying = false;
   this.elem.addClass('frozen');
   if (this.game) {
@@ -171,7 +169,7 @@ app.Game.prototype.freezeGame = function() {
 /**
  * Unfreezes the game.
  */
-app.Game.prototype.unfreezeGame = function() {
+Game.prototype.unfreezeGame = function() {
   if (!this.isPlaying) {
     this.isPlaying = true;
     this.elem.removeClass('frozen').focus();
@@ -185,7 +183,7 @@ app.Game.prototype.unfreezeGame = function() {
 /**
  * Stops the game as game over. Displays the game over screen as well.
  */
-app.Game.prototype.gameover = function() {
+Game.prototype.gameover = function() {
   this.freezeGame();
   this.gameoverView.show();
   window.santaApp.fire('sound-trigger', 'music_ingame_gameover');
@@ -201,7 +199,7 @@ app.Game.prototype.gameover = function() {
 /**
  * Pause the game.
  */
-app.Game.prototype.pause = function() {
+Game.prototype.pause = function() {
   this.paused = true;
   this.freezeGame();
 };
@@ -210,7 +208,7 @@ app.Game.prototype.pause = function() {
 /**
  * Resume the game.
  */
-app.Game.prototype.resume = function() {
+Game.prototype.resume = function() {
   this.paused = false;
   this.unfreezeGame();
 };
@@ -218,7 +216,7 @@ app.Game.prototype.resume = function() {
 /**
  * Show Lockscreen Message.
  */
-app.Game.prototype.showLockscreenMessage = function () {
+Game.prototype.showLockscreenMessage = function () {
   if (this.gyroPresent){
     var paused = this.paused;
     var lockElem = this.elem.find('.lockscreen');
@@ -239,12 +237,12 @@ app.Game.prototype.showLockscreenMessage = function () {
 };
 
 
-app.Game.prototype.updateSize_ = function() {
+Game.prototype.updateSize_ = function() {
   var width = window.innerWidth,
     height = window.innerHeight - window.santaApp.headerSize,
     scale = width < 980 ? (width + 490) / (980 + 490) : 1;
   this.setScale(scale);
-  console.info('got size', scale);
+//   console.info('got size', scale);
 
   this.sceneSize.height = height * (1 / this.scale);
   this.sceneSize.width = width * (1 / this.scale);
@@ -264,7 +262,7 @@ app.Game.prototype.updateSize_ = function() {
  * Manages a cache of the scene size. Updates on window resize.
  * @private
  */
-app.Game.prototype.watchSceneSize_ = function() {
+Game.prototype.watchSceneSize_ = function() {
   this.updateSize_();
   $(window).on('resize.penguindash', this.updateSize_.bind(this));
 };
@@ -274,7 +272,7 @@ app.Game.prototype.watchSceneSize_ = function() {
  * Manages device orientation. Updates on orientation change.
  * @private
  */
-app.Game.prototype.watchOrientation_ = function() {
+Game.prototype.watchOrientation_ = function() {
   // var updateOrientation = function() {
   //   if ((screen.orientation && screen.orientation.angle !== 0) ||
   //     (window.orientation && window.orientation !== 0)) {
@@ -294,7 +292,7 @@ app.Game.prototype.watchOrientation_ = function() {
  * Cleanup
  * @export
  */
-app.Game.prototype.dispose = function() {
+Game.prototype.dispose = function() {
   this.freezeGame();
 
   $(window).off('.penguindash');
@@ -304,3 +302,4 @@ app.Game.prototype.dispose = function() {
   this.tutorial.dispose();
 };
 
+export { Game };

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import {html, LitElement} from 'lit-element';
+import {html, LitElement, unsafeCSS} from 'lit-element';
 import {until} from 'lit-html/directives/until.js';
 import {_static} from '../magic.js';
 import * as prefix from '../lib/prefix.js';
 import {prepareAsset} from '../lib/media.js';
 
-import styles from './santa-tutorial.css';
+import styles from './santa-tutorial.scss?inline';
 
 
 const tutorialDelay = 1500;
@@ -81,7 +81,8 @@ export class SantaTutorialElement extends LitElement {
   }
 
   static get styles() {
-    return [styles];
+    // return [styles];
+    return [unsafeCSS(styles)];
   }
 
   constructor() {

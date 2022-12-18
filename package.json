@@ -3,9 +3,9 @@
   "version": "2021.1.0",
   "license": "Apache-2.0",
   "scripts": {
+	"_": "yarn vite static/scenes/penguindash-vite for just the game, whcih works",
     "vite": "vite --port 3000",
     "build": "vite build",
-	
     "dev": "npm run start",
     "start": "./serve.js",
     "release": "./release.js",
@@ -49,6 +49,7 @@
     "mocha": "^5.2.0",
     "mocha-headless-server": "^0.1.2",
     "parse5": "^5.1.0",
+    "phaser": "2.6.2",
     "polka": "^0.5.2",
     "pretty-ms": "^4.0.0",
     "regenerator-runtime": "^0.13.3",

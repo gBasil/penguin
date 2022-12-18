@@ -14,15 +14,11 @@
  * the License.
  */
 
-goog.provide('app.Constants');
-goog.provide('Constants');
-
-
 /**
  * These are gameplay and UI related constants used by the code.
  * Please tweak them to improve gameplay and game balance.
  */
-app.Constants = {
+const Constants = {
   TOTAL_LEVELS: 10, // number of levels
 
   INITIAL_COUNTDOWN: 0, // count up, so start count at zero
@@ -92,5 +88,4 @@ app.Constants = {
   }
 };
 
-
-Constants = app.Constants;
+export { Constants };

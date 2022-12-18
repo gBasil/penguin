@@ -14,12 +14,10 @@
  * the License.
  */
 
-goog.provide('app.shared.Gameover');
-
 /**
  * Gameover screen. Just calls out to global.
  */
-app.shared.Gameover = class Gameover {
+const Gameover = class Gameover {
 
   /**
    * @param {T} game The game object.
@@ -46,3 +44,5 @@ app.shared.Gameover = class Gameover {
     window.santaApp.fire('game-stop', detail);
   }
 };
+
+export { Gameover };

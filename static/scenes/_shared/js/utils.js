@@ -14,9 +14,7 @@
  * the License.
  */
 
-goog.provide('app.shared.utils');
-
-app.shared.utils = (function() {
+const utils = (function() {
 
   /**
    * Wraps a value and provides useful utility methods for it.
@@ -203,3 +201,5 @@ app.shared.utils = (function() {
     SmartValue,
   };
 })();
+
+export { utils };

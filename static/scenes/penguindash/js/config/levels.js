@@ -14,15 +14,11 @@
  * the License.
  */
 
-goog.provide('app.config.Levels');
-
-
-
 /**
  * Level configuration - specifies type of textures and positions only
  * @const
  */
-app.config.Levels = [
+const Levels = [
 
   // 1: Down Left then Right - GOOD
   [
@@ -723,3 +719,5 @@ app.config.Levels = [
   ]
 
 ];
+
+export { Levels };

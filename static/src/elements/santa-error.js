@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {html, LitElement} from "lit-element";
-import styles from './santa-error.css';
+import {html, LitElement, unsafeCSS} from "lit-element";
+import styles from './santa-error.scss?inline';
 import {_msg} from '../magic.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
@@ -28,7 +28,8 @@ class SantaErrorElement extends LitElement {
   }
 
   static get styles() {
-    return [styles];
+    // return [styles];
+    return [unsafeCSS(styles)];
   }
 
   constructor() {
