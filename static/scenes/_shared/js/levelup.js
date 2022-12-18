@@ -15,6 +15,7 @@
  */
 
 import $ from 'jquery';
+import { getSetting } from '../../../src/mod/settings';
 import { utils } from './utils';
 
 /**
@@ -85,12 +86,12 @@ LevelUp.prototype.numberShown_ = function() {
  * @param {function()=} opt_callback The function to call while the level is hidden.
  */
 LevelUp.prototype.show = function(level, opt_callback) {
-  this.bgElem.addClass('is-visible');
+  if (!getSetting('hideTransitions')) this.bgElem.addClass('is-visible');
   timeoutOneEvent(this.bgElem, 'transitionend', 1.0, opt_callback);
   this.bgElem.css('border-width', this.bgBorderWidth);
 
   timeoutOneEvent(this.numberElem, 'animationend', 1.5, this.numberShown_.bind(this));
-  this.numberElem.text('' + level).addClass('show');
+  if (!getSetting('hideTransitions')) this.numberElem.text('' + level).addClass('show');
 
   window.santaApp.fire('sound-trigger', 'level_transition_close');
 };

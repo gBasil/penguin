@@ -18,6 +18,7 @@ import {html, LitElement, unsafeCSS} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined';
 import styles from './santa-badge.scss?inline';
 import {_msg} from '../magic.js';
+import { getSetting } from '../mod/settings';
 
 
 const MAX_TIME = (10 * 60) - 1;  // max is 9:59
@@ -115,7 +116,7 @@ export class SantaBadgeElement extends LitElement {
       <label>${_msg`time`}</label>
     </div>
   </div>
-  <div class="item ${this.level && (this._levelActive || !displayScore) ? 'alt-active' : ''}" ?hidden=${!displayRight}>
+  <div class="item ${this.level && (getSetting('alwaysShowLevel') || this._levelActive || !displayScore) ? 'alt-active' : ''}" ?hidden=${!displayRight}>
     <div class="data">
       <span>${score}<small>${unit}</small></span>
       <label>${_msg`score`}</label>

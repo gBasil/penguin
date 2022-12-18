@@ -20,6 +20,28 @@ const settings = [
 		default: false,
 		cheat: false,
 	},
+	{
+		key: 'fastRespawn',
+		name: 'Fast Respawn',
+		type: 'boolean',
+		default: false,
+		cheat: true,
+	},
+	{
+		key: 'hideTransitions',
+		name: 'Hide Level Transitions',
+		type: 'boolean',
+		default: false,
+		cheat: false,
+	},
+	{
+		key: 'alwaysShowLevel',
+		name: 'Always Show Level',
+		type: 'boolean',
+		default: false,
+		cheat: false,
+
+	}
 ];
 
 // Initialize values
@@ -63,7 +85,7 @@ function setSetting(key, val) {
 	save();
 }
 
-// TODO: Have settings only return new values after a restart
+// TODO: Have cheat settings only return new values after a restart
 function getSetting(key) {
 	const value = values[key];
 

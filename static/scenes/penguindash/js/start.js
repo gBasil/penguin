@@ -15,6 +15,7 @@
  */
 
 import $ from 'jquery';
+import { handleEvent } from '../../../src/mod/events';
 import { getSetting } from '../../../src/mod/settings';
 import { Levels } from './config/levels';
 import { Constants } from './constants';
@@ -34,6 +35,30 @@ const Start = function(game) {
   window.santaApp.fire('sound-trigger', 'pnd_slide_start');
   this.isMobileOrIE = typeof Object.assign != 'function';
   this.isLowPerformance = false;
+
+  // TODO: Add some sort of penalty for skipping.
+  // Also drowns the penguin when the new level doesn't have ground underneath, which can lead to some weird behavior
+  handleEvent('skipTo', level => {
+	const old = this.level;
+
+	this.pause();
+
+    this.level = level;
+    this.game.st_parent.scoreboard.setLevel(this.level - 1);
+    this.game.st_parent.levelUp.show(this.level, this.restartLevel_.bind(this));
+    window.santaApp.fire('sound-trigger', 'pnd_level_up');
+
+	setTimeout(() => {
+		this.showLevel_(level);
+	
+		// Hide previous level, showLevel_ fails to do that
+		if (this.levels[old-1]) {
+			for (var index in this.levels[old-1]) {
+				this.levels[old-1][index].group.visible = false;
+			}
+		}
+	}, 1000);
+  });
 };
 
 
@@ -619,15 +644,19 @@ Start.prototype.dieAndRestart_ = function() {
     t = 10;
     window.santaApp.fire('sound-trigger', 'pnd_freeze');
     window.santaApp.fire('sound-trigger', 'pnd_slide_stop');
-	if (getSetting('restartOnDeath')) return this.game.st_parent.restart();
     this.penguin.die();
     this.dead = true;
 
     window.setTimeout(() => {
       this.dead = false;
+	  if (getSetting('restartOnDeath')) return this.game.st_parent.restart();
       this.restartLevel_();
-      if (!getSetting('disableDeathPenalty')) this.game.st_parent.scoreboard.onFrame(-Constants.TIME_LOSE);
-    }, 2500);
+      if (!getSetting('disableDeathPenalty')) this.game.st_parent.scoreboard.onFrame(
+		// If using Fast Respawn, add back the two seconds to the timer.
+		// Obviously, this still invalidates RTA runs
+		-Constants.TIME_LOSE + (getSetting('fastRespawn') ? 1.5 : 0)
+	  );
+    }, getSetting('fastRespawn') ? 1000 : 2500);
   }
 
   this.penguin.multiplyVelocity(Constants.SPEED_DECAY_FAST);

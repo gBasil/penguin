@@ -20,6 +20,7 @@ import styles from './santa-overlay.scss?inline';
 import {_msg} from '../magic.js';
 import './santa-button.js';
 import { getSetting, setSetting, settings } from '../mod/settings';
+import { sendEvent } from '../mod/events';
 
 export class SantaOverlayElement extends LitElement {
   static get properties() {
@@ -37,7 +38,7 @@ export class SantaOverlayElement extends LitElement {
     this.shadowRoot.adoptedStyleSheets = [sheet];
   }
 
-  _dispatchRestart(e) {
+  _dispatchRestart() {
     this.dispatchEvent(new CustomEvent('restart'));
   }
 
@@ -47,6 +48,12 @@ export class SantaOverlayElement extends LitElement {
 
   _toggleSetting(e) {
 	setSetting(e.target.id, e.target.checked);
+  }
+
+  _dispatchLevel(level) {
+	// Note, this will break when on the end screen
+	// The music will not update, the timer will not restart
+	sendEvent('skipTo', level, true);
   }
 
   update(changedProperties) {
@@ -94,7 +101,24 @@ export class SantaOverlayElement extends LitElement {
         </santa-button>
       </div>
     </nav>
-	<div class="settings">
+	<div class="container">
+		<h3>Skip To Level</h3>
+		<div class="buttons">
+			<button @click="${() => this._dispatchLevel(1)}">1</button>
+			<button @click="${() => this._dispatchLevel(2)}">2</button>
+			<button @click="${() => this._dispatchLevel(3)}">3</button>
+			<button @click="${() => this._dispatchLevel(4)}">4</button>
+			<button @click="${() => this._dispatchLevel(5)}">5</button>
+		</div>
+		<div class="buttons">
+			<button @click="${() => this._dispatchLevel(6)}">6</button>
+			<button @click="${() => this._dispatchLevel(7)}">7</button>
+			<button @click="${() => this._dispatchLevel(8)}">8</button>
+			<button @click="${() => this._dispatchLevel(9)}">9</button>
+			<button @click="${() => this._dispatchLevel(10)}">10</button>
+		</div>
+	</div>
+	<div class="container">
 		<h3>Settings</h3>
 		${settings.map(setting => html`<label>
 			${setting.type === 'boolean' && html`<input type="checkbox" @change="${this._toggleSetting}" id="${setting.key}" .checked=${getSetting(setting.key)}></input>`}

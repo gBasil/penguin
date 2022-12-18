@@ -51,6 +51,7 @@ import * as firebaseConfig from './src/core/config.js';
 import * as common from './src/core/common.js';
 import isAndroid from './src/core/android.js';
 import {_msg} from './src/magic.js';
+import { handleEvent, sendEvent } from './src/mod/events.js';
 
 
 window.santaApp = {};
@@ -206,7 +207,8 @@ interludeElement.addEventListener('transition_out', () => {
 
 scoreOverlayElement.addEventListener('restart', () => global.setState({status: 'restart'}));
 scoreOverlayElement.addEventListener('resume', () => global.setState({status: ''}));
-scoreOverlayElement.addEventListener('home', () => go(''));
+
+handleEvent('skipTo', () => global.setState({status: ''}));
 
 
 /**
