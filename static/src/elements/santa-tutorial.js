@@ -34,11 +34,7 @@ const tutorialHeight = 270;
  * @return {!Image|!HTMLVideoElement}
  */
 function prepareTutorialAsset(name, callback) {
-  if (name.indexOf('.') === -1) {
-    name = `input/${name}.svg`;
-  }
-
-  const {promise, asset} = prepareAsset(_static`img/tutorial/` + name);
+  const {promise, asset} = prepareAsset(`/img/tutorial/${name}.svg`);
 
   promise.then(() => {
     // If the asset was an image, step it over its width.

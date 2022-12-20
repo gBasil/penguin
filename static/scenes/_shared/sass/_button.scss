@@ -38,24 +38,10 @@ $button-sizes: (
 );
 
 $button-icons: (
-  globe: globe,
-  home: home,
-  menu: menu-hamburger,
-  mute: volume-off,
-  next: arrow-key-right,
-  next-dark: arrow-key-right-dark,
   pause: pause,
   play: play,
-  prev: arrow-key-left,
-  prev-dark: arrow-key-left-dark,
   share: share,
-  shuffle: shuffle,
   refresh: refresh,
-  replay: replay,
-  trash: trash,
-  unmute: volume-on,
-  next-arrow: arrow-right,
-  prev-arrow: arrow-left
 );
 
 // Button color mixins
@@ -129,7 +115,7 @@ $button-icons: (
 
 $shared: '../_shared/' !default;
 @mixin ButtonIcon($icon) {
-  background-image: url(#{$shared}img/button/#{$icon}.svg);
+  background-image: url(#{$shared}img/#{$icon}.svg);
 }
 
 ##{$name} {
@@ -210,7 +196,7 @@ $shared: '../_shared/' !default;
 
   @each $icon, $file in $button-icons {
     .Button--#{$icon} {
-      background-image: url(#{$shared}img/button/#{$file}.svg);
+      background-image: url(#{$shared}img/#{$file}.svg);
     }
   }
 }

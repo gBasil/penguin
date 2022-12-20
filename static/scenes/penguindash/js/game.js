@@ -22,7 +22,6 @@ import { LevelUp } from '../../_shared/js/levelup';
 import { Gameover } from '../../_shared/js/gameover';
 import { Scoreboard } from '../../_shared/js/scoreboard';
 import { Tutorial } from '../../_shared/js/tutorial';
-import { handleEvent } from '../../../src/mod/events';
 
 /**
  * Main game class.

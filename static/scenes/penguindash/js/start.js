@@ -41,6 +41,10 @@ const Start = function(game) {
   handleEvent('skipTo', level => {
 	const old = this.level;
 
+	if (this.level === level) return;
+
+	// TODO: Check if the user has finished the game
+
 	this.pause();
 
     this.level = level;

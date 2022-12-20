@@ -20,7 +20,7 @@ import {AudioLoader} from './kplay-lib.js';
 import './polyfill/event-target.js';
 import '../third_party/lib/klang/config.js';
 
-const audioPath = _static`audio`;
+const audioPath = '/audio';
 
 const masterContext = new (window.AudioContext || window.webkitAudioContext)();
 

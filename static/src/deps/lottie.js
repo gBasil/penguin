@@ -29,7 +29,8 @@
 
 const workletSupport = false;
 
-import '../../node_modules/lottie-web/build/player/lottie_canvas.min.js';
+// import '../../node_modules/lottie-web/build/player/lottie_canvas.min.js';
+import './lottie_canvas.min.js';
 
 export function loadAnimation(path, options) {
   if (!options.container) {

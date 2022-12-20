@@ -74,7 +74,7 @@ class SantaInterludeElement extends HTMLElement {
       }
     });
 
-    this._interludeAnimation = loadAnimation(_static`img/interlude/loader.json`, {
+    this._interludeAnimation = loadAnimation(`/img/interlude/loader.json`, {
       autoplay: true,
       loop: true,
       container: lastLayer,

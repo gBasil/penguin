@@ -157,7 +157,7 @@ nav {
 .hero {
 	flex-grow: 1;
 	min-height: 136px;
-	background: url(./static/img/overlay/gameover.svg) bottom center / contain
+	background: url("/img/overlay/gameover.svg") bottom center / contain
 		no-repeat;
 
 	@media (min-height: 500px) {
@@ -165,10 +165,10 @@ nav {
 	}
 
 	&.share {
-		background-image: url(./static/img/overlay/share.svg);
+		background-image: url("/img/overlay/share.svg");
 	}
 	&.pause {
-		background-image: url(./static/img/overlay/pause.svg);
+		background-image: url("/img/overlay/pause.svg");
 	}
 
 	h1 {

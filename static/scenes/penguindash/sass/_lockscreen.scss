@@ -36,7 +36,7 @@ $rotate-bg: $gameover-bg !default;
   }
 
   .lockscreen-graphic {
-    background: url(img/lock-screen.svg) 50% top / contain no-repeat;
+    background: url('/img/sprites/lock-screen.svg') 50% top / contain no-repeat;
     height: 200px;
     left: 50%;
     margin-left: -100px;
