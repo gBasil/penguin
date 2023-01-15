@@ -1501,11 +1501,11 @@
   },
   "meta_description": {
     "description": "Short sentence describing Santa Tracker. This appears as default text on a social media site when Santa Tracker is shared.",
-    "message": "Use Google Santa Tracker to follow Santa Claus on Google Maps as he makes his journey around the world."
+    "message": "Use Penguin Dash to follow Santa Claus on Google Maps as he makes his journey around the world."
   },
   "meta_title": {
     "description": "Product name, prefixed with Google. The name of the website including Google brand. Please keep relatively short.",
-    "message": "Google Santa Tracker"
+    "message": "Penguin Dash"
   },
   "mg_country_name": {
     "description": "Name of a country. This appears as a label in a geography game.",
@@ -2541,7 +2541,7 @@
   },
   "share-text": {
     "description": "Appears as a message attached to a virtual postcard.",
-    "message": "I created this postcard for you in the Google Santa Tracker. Happy holidays!"
+    "message": "I created this postcard for you in the Penguin Dash. Happy holidays!"
   },
   "share-this": {
     "description": "Button text. 15char limit. Shares an image on Google+ or Facebook.",
