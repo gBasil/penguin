@@ -4,7 +4,7 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"vite": "vite --port 3000",
-		"build": "vite build && esbuild static/scenes/penguindash/phaser-arcade-physics.js --minify --outfile=dist/static/scenes/phaser-arcade-physics.js",
+		"build": "vite build",
 		"dev": "vite dev"
 	},
 	"dependencies": {
