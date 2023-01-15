@@ -9,5 +9,5 @@ export default defineConfig({
 				penguin: resolve(__dirname, 'static/scenes/penguindash/index.html'),
 			},
 		},
-	},
+	}
 });
